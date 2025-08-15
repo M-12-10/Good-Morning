@@ -1,1 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Good Morning Card — Hello Kitty Inspired</title>
+  <style>
+    :root{
+      --pink:#ff7aa2; --rose:#ff9fbb; --blush:#ffd1e1; --hotpink:#ff4f93; --cream:#fff7fa; --ink:#5b4251; --gold:#ffedb7;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: ui-rounded, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+      color:var(--ink);
+      display:grid; place-items:center; min-height:100vh;
+      background:
+        radial-gradient(circle at 12px 12px, var(--blush) 2.2px, transparent 2.2px) 0 0/36px 36px,
+        radial-gradient(circle at 30px 30px, var(--blush) 2.2px, transparent 2.2px) 0 0/36px 36px,
+        linear-gradient(180deg, #fff 0%, #ffeef6 100%);
+      overflow-x:hidden;
+    }
+
+    .scene{position:relative; padding:24px; width:100%;}
+
+    .card{
+      width:min(720px, 92vw);
+      background: var(--cream);
+      border-radius:28px;
+      border:6px solid var(--blush);
+      box-shadow: 0 30px 60px rgba(255,79,147,.25), 0 12px 24px rgba(0,0,0,.08);
+      padding:3.75rem 2.25rem 2.75rem;
+      position:relative; isolation:isolate; margin-inline:auto;
+    }
+
+    /* lace edge */
+    .card::before{
+      content:""; position:absolute; inset:-14px; border-radius:34px;
+      background:
+        radial-gradient(circle at 22px 22px, var(--blush) 18px, transparent 19px) 0 0/44px 44px,
+        radial-gradient(circle at 0 0, transparent 20px, var(--blush) 21px);
+      mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      padding:14px; z-index:-1;
+      filter:drop-shadow(0 16px 24px rgba(255,79,147,.2));
+    }
+
+    /* subtle stationery lines inside */
+    .paper{ background: repeating-linear-gradient(180deg, transparent 0 34px, rgba(255,159,187,.15) 34px 35px), linear-gradient(0deg, #fffdfb, #fff8fb);
+      border-radius:20px; padding:2rem; border:2px dashed var(--blush);
+    }
+
+    /* Bow */
+    .bow-wrap{position:absolute; inset:auto 0 auto 0; top:-34px; display:flex; justify-content:center; pointer-events:none}
+    .bow{filter: drop-shadow(0 6px 8px rgba(0,0,0,.12)); width:128px; height:auto}
+
+    h1{ margin:0 0 .75rem; text-align:center; font-size:clamp(1.8rem, 3.2vw + 1rem, 3rem); line-height:1.15; letter-spacing:.5px;
+      background: linear-gradient(90deg, var(--hotpink), var(--pink), var(--rose)); -webkit-background-clip:text; background-clip:text; color:transparent; position:relative; }
+    h1::after{ content:""; position:absolute; inset:0; background:linear-gradient(120deg, transparent 0%, rgba(255,255,255,.6) 15%, transparent 30%); transform:translateX(-120%); animation:shine 3.5s ease-in-out infinite; }
+    @keyframes shine{to{transform:translateX(120%)}}
+
+    .subtitle{margin:0 auto; text-align:center; font-size:clamp(1.05rem, 1.2vw + .8rem, 1.35rem); max-width:42ch; color:#6b4b5a}
+
+    /* whiskers under the bow */
+    .whiskers{position:relative; width:100%; height:22px; margin:.5rem 0 1.25rem}
+    .whiskers::before, .whiskers::after{
+      content:""; position:absolute; left:50%; width:220px; height:2px; background:linear-gradient(90deg, transparent, #f6a6c1 10%, #e77aa4 50%, #f6a6c1 90%, transparent);
+      top:10px; transform:translateX(-50%); filter:blur(.2px);
+    }
+    .whiskers::after{ top:16px; width:260px; opacity:.7}
+
+    /* ambient floaters */
+    .floaters{position:absolute; inset:0; pointer-events:none; overflow:hidden}
+    .heart{position:absolute; bottom:-30px; left:var(--x); font-size:var(--s); opacity:.8; animation:float var(--t) ease-in infinite}
+    @keyframes float{ to{ transform: translateY(-120vh) rotate(25deg); opacity:0 } }
+
+    /* button */
+    .controls{display:flex; justify-content:center; margin-top:1.25rem}
+    .btn{appearance:none; border:none; cursor:pointer; padding:1rem 1.25rem; border-radius:999px; font-weight:700; letter-spacing:.3px;
+      background:linear-gradient(90deg, var(--pink), var(--hotpink)); color:white; box-shadow:0 12px 22px rgba(255,79,147,.3), inset 0 1px 0 rgba(255,255,255,.5);
+      transition: transform .12s ease, box-shadow .12s ease; touch-action:manipulation;}
+    .btn:hover{transform:translateY(-1px); box-shadow:0 16px 26px rgba(255,79,147,.35), inset 0 1px 0 rgba(255,255,255,.6)}
+    .btn:active{transform:translateY(1px)}
+
+    /* swirl layer & kisses */
+    .swirl-layer{position:absolute; inset:0; pointer-events:none}
+    .kiss-swirl{position:absolute; left:var(--x0); top:var(--y0); transform:translate(-50%,-50%);
+      filter:drop-shadow(0 4px 8px rgba(255,79,147,.25));
+      animation:swirl var(--t) ease-out forwards;
+      will-change:transform, opacity;
+    }
+    @keyframes swirl{
+      0%{ transform:translate(-50%,-50%) rotate(0deg) translate(0) scale(.9); opacity:.95 }
+      60%{ transform:translate(-50%,-50%) rotate(var(--rot)) translate(var(--r1)) rotate(0deg) scale(1); opacity:1 }
+      100%{ transform:translate(-50%,-50%) rotate(calc(var(--rot) + 220deg)) translate(var(--r2)) rotate(0deg) scale(1.05); opacity:0 }
+    }
+
+    footer{margin-top:1.25rem; text-align:center; font-size:.96rem; color:#8a6a78}
+    .fancy{ background: linear-gradient(90deg, var(--hotpink), var(--pink), var(--rose));
+      -webkit-background-clip:text; background-clip:text; color:transparent; position:relative; display:inline-block; }
+    .fancy::after{ content:""; position:absolute; inset:0; background:linear-gradient(120deg, transparent 0%, rgba(255,255,255,.6) 15%, transparent 30%); transform:translateX(-120%); animation:shine 3.5s ease-in-out infinite; }
+
+    /* Mobile responsiveness tweaks */
+    @media (max-width: 540px){
+      .card{ padding:2.5rem 1.25rem 2rem; border-width:5px; border-radius:24px }
+      .paper{ padding:1.15rem; border-radius:16px }
+      .bow{ width:96px }
+      .controls{ margin-top:1rem }
+      .btn{ width:100%; font-size:1.05rem }
+      .subtitle{ max-width: 30ch }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene">
+    <div class="card">
+      <div class="bow-wrap" aria-hidden="true">
+        <!-- Cute bow (original SVG) -->
+        <svg class="bow" viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="bow">
+          <defs>
+            <radialGradient id="g1" cx="50%" cy="50%" r="70%">
+              <stop offset="0%" stop-color="#ff8fb4"/>
+              <stop offset="60%" stop-color="#ff6aa0"/>
+              <stop offset="100%" stop-color="#ff4f93"/>
+            </radialGradient>
+          </defs>
+          <ellipse cx="320" cy="160" rx="64" ry="64" fill="url(#g1)" />
+          <path d="M320 160c-80 0-120-120-220-110-63 6-88 76-60 120 30 48 116 36 196 4 42-16 56-14 84-14" fill="url(#g1)" opacity=".95"/>
+          <path d="M320 160c80 0 120-120 220-110 63 6 88 76 60 120-30 48-116 36-196 4-42-16-56-14-84-14" fill="url(#g1)" opacity=".95"/>
+          <circle cx="320" cy="160" r="30" fill="#ff2f87" opacity=".9"/>
+          <ellipse cx="320" cy="160" rx="22" ry="14" fill="#ffd1e1" opacity=".6"/>
+        </svg>
+      </div>
+
+      <div class="paper">
+        <h1>Good Morning, My Beautiful Girl ❤</h1>
+        <div class="whiskers" aria-hidden="true"></div>
+        <p class="subtitle">Your bongu loves you soooooooo much. Stay blessed Meri Jaan!!!</p>
+        <div class="controls">
+          <button class="btn" id="surprise">Tap here</button>
+        </div>
+        <footer>
+          <span class="fancy">Remember, 12 baje se pehle Saraiya hehehehehehe</span>
+        </footer>
+      </div>
+
+      <!-- ambient floating hearts inside card -->
+      <div class="floaters" aria-hidden="true" id="floaters"></div>
+      <!-- swirl overlay -->
+      <div class="swirl-layer" aria-hidden="true" id="swirl"></div>
+    </div>
+  </div>
+
+  <script>
+    // Ambient floating hearts
+    const floaters = document.getElementById('floaters');
+    const hearts = ['❤','💖','💗','💞','💘','💓'];
+    const H = 18;
+    for(let i=0;i<H;i++){
+      const span=document.createElement('span');
+      span.className='heart';
+      span.textContent=hearts[Math.floor(Math.random()*hearts.length)];
+      span.style.setProperty('--x', Math.random()*100+'%');
+      span.style.setProperty('--s', (Math.random()*1.2+0.9)+'rem');
+      span.style.setProperty('--t', (Math.random()*10+10)+'s');
+      span.style.animationDelay = (Math.random()*-10)+'s';
+      floaters.appendChild(span);
+    }
+
+    // Swirling kisses from the button
+    const swirl = document.getElementById('swirl');
+    const btn = document.getElementById('surprise');
+    const kissChars = ['💋','😘'];
+
+    function swirlKisses({count=42, r1=[48,84], r2=[130,200], dur=[1.7,3] }={}){
+      const btnRect = btn.getBoundingClientRect();
+      const layerRect = swirl.getBoundingClientRect();
+      const x0 = btnRect.left + btnRect.width/2 - layerRect.left;
+      const y0 = btnRect.top + btnRect.height/2 - layerRect.top;
+
+      for(let i=0;i<count;i++){
+        const s=document.createElement('span');
+        s.className='kiss-swirl';
+        s.textContent = kissChars[i % kissChars.length];
+        s.style.setProperty('--x0', x0+'px');
+        s.style.setProperty('--y0', y0+'px');
+        s.style.left = x0+'px';
+        s.style.top = y0+'px';
+        s.style.fontSize = (1.05 + Math.random()*0.7) + 'rem';
+        s.style.setProperty('--rot', (Math.random()*360).toFixed(2) + 'deg');
+        const rr1 = (r1[0] + Math.random()*(r1[1]-r1[0])).toFixed(2) + 'px';
+        const rr2 = (r2[0] + Math.random()*(r2[1]-r2[0])).toFixed(2) + 'px';
+        s.style.setProperty('--r1', rr1);
+        s.style.setProperty('--r2', rr2);
+        s.style.setProperty('--t', (dur[0] + Math.random()*(dur[1]-dur[0])).toFixed(2) + 's');
+        swirl.appendChild(s);
+        s.addEventListener('animationend', ()=> s.remove());
+      }
+    }
+
+    btn.addEventListener('click', ()=>{
+      swirlKisses();
+    });
+
+    // Prevent accidental text selection on rapid taps (mobile)
+    document.addEventListener('mousedown', e=>{ if(e.detail>1) e.preventDefault(); }, {passive:false});
+  </script>
+</body>
+</html>
 
